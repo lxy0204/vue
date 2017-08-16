@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <meta charset="UTF-8">
+    <title>计算属性</title>
+    <script src="https://vuejs.org/js/vue.js"></script>
+    <link rel="stylesheet" href="src/css/lxy_style.css" type="text/css">
+  </head>
+  <body>
+    <div id="example">
+      <p>Original message:"{{message}}"</p>
+      <p>Computed reversed message:"{{reversedMessage}}"</p>
+    </div>
+    <div id="example_1">
+      <p>{{now}}</p>
+    </div>
+  </body>
+  <script>
+    var vm = new Vue({
+      el: '#example',
+      data: {
+        message: 'Hello'
+      },
+      computed: {
+        reversedMessage: function(){
+          return this.message.split('').reverse().join('')
+        }
+      }
+    })
+    var vm_1 = new Vue({
+      el: '#example_1',
+      computed: {
+        now: function(){
+          return new Date()
+        }
+      }
+    })
+  </script>
+</html>
