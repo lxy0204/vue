@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <script src="https://unpkg.com/vue"></script>
+  <title>动态数据绑定（二）</title>
+</head>
+<body>
+<p>按“F12”打开控制台输入test，进行操作</p>
+<script>
+  let data = {
+    user: {
+      name: "lxy",
+      age: "6"
+    }
+  };
+  let temp = Observer.prototype;
+  temp.travel = function(obj){
+    let value;
+    // 遍历所有属性
+    for(let key in obj){
+      // for..in循环会把对象原型链上所有可枚举属性都循环出来，可用hasOwnProperty过滤
+      if(obj.hasOwnProperty(key)){
+        value = obj[key];
+        if(typeof value === "object"){
+          new Observer(value);
+        }
+        this.change(key, value);
+      }
+    }
+  }
+  temp.change = function(key, value){
+    Object.defineProperty(this.data, key, {
+      enumerable: true,
+      configurable: true,
+      get: function(){
+        console.log('你访问了' + key);
+        return value;
+      },
+      set: function(newValue){
+        console.log('你设置了' + key);
+        console.log('新的值为' + key + '=' + newValue);
+        if(newValue === value){
+          return;
+        }
+        value = newValue;
+      }
+    })
+  };
+  function Observer(data){
+    this.data = data;
+    this.travel(data);
+  }
+  let test = new Observer(data);
+</script>
+</body>
+</html>
